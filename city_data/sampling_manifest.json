@@ -1,0 +1,82 @@
+{
+  "source": {
+    "service_url": "https://services.arcgis.com/KYvXadMcgf0K1EzK/arcgis/rest/services/311_Citizen_Request_for_Service___All_Requests/FeatureServer",
+    "layer_names": {
+      "0": "Open or In-Progress Status",
+      "1": "Closed Status"
+    },
+    "queried_at_utc": "2026-08-29T14:20:28.305337+00:00"
+  },
+  "sampling": {
+    "seed": "civicflow-baton-311-20260829-v1",
+    "method": "按图层和 ParentType 分层，分层内使用 SHA-256 稳定抽样",
+    "source_record_count": 1195849,
+    "target_record_count": 24000,
+    "sample_ratio": 0.020069423480723738,
+    "split_ratio": "retrieval 80%, validation 10%, test 10%（各分层取整）"
+  },
+  "output": {
+    "raw_jsonl": "cases_raw.jsonl",
+    "normalized_jsonl": "cases_normalized.jsonl",
+    "normalized_csv": "cases_normalized.csv",
+    "fields_selected": {
+      "0": [
+        "id",
+        "ParentType",
+        "typename",
+        "StreetAddress",
+        "cityname",
+        "createdate",
+        "Lastaction",
+        "StatusDesc",
+        "comments",
+        "Department",
+        "Division",
+        "DeptDiv",
+        "DeptDIVID"
+      ],
+      "1": [
+        "id",
+        "ParentType",
+        "typename",
+        "StreetAddress",
+        "cityname",
+        "createdate",
+        "Lastaction",
+        "ClosedDate",
+        "StatusDesc",
+        "comments",
+        "Department",
+        "Division",
+        "DeptDiv",
+        "DeptDIVID"
+      ]
+    },
+    "geometry_downloaded": false
+  },
+  "counts": {
+    "by_split": {
+      "retrieval": 19190,
+      "test": 2412,
+      "validation": 2398
+    },
+    "by_layer": {
+      "0": 362,
+      "1": 23638
+    },
+    "by_category_zh": {
+      "其他城市公共服务": 1,
+      "垃圾处理": 13250,
+      "建筑规范与分区违规": 193,
+      "排水、积水与洪涝": 1301,
+      "树木和杂草维护": 729,
+      "污水与下水道": 1682,
+      "环境卫生与失管物业": 1991,
+      "环境问题": 137,
+      "社区与小区问题": 30,
+      "街道与交通": 1691,
+      "资源回收": 1940,
+      "道路维护": 1055
+    }
+  }
+}

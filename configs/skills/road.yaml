@@ -1,0 +1,11 @@
+name: road
+version: "1.0"
+enabled: true
+priority: 10
+triggers: [道路, 路面, 坑洞, 交通]
+required_fields: [category, location]
+allowed_tools: [case_search, validate_address, memory_lookup, create_local_case]
+route_defaults:
+  department: 道路交通部门
+  priority: 普通
+prompt: 重点识别道路维护和交通问题。

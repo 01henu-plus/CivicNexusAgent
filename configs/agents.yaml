@@ -1,0 +1,18 @@
+agents:
+  - name: intake
+    display_name: 受理理解 Agent
+    order: 1
+    enabled: true
+  - name: case_analysis
+    display_name: 案例分析 Agent
+    order: 2
+    enabled: true
+  - name: routing
+    display_name: 分派决策 Agent
+    order: 3
+    enabled: true
+  - name: review
+    display_name: 复核 Agent
+    order: 4
+    enabled: true
+

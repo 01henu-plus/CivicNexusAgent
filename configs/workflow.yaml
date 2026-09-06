@@ -1,0 +1,11 @@
+steps:
+  RECEIVED:
+    agent: intake
+  INTAKE:
+    agent: intake
+  CASE_ANALYSIS:
+    agent: case_analysis
+  ROUTING:
+    agent: routing
+  REVIEWING:
+    agent: review

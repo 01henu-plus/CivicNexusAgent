@@ -1,0 +1,19 @@
+app:
+  name: CivicNexus
+  environment: development
+  api_prefix: /api/v1
+
+runtime:
+  max_review_rounds: 2
+  checkpoint_enabled: true
+
+retrieval:
+  embedding_provider: openai_compatible
+  embedding_model: BAAI/bge-m3
+  embedding_batch_size: 64
+  chroma_collection: civic_cases
+  bm25_index_path: ./storage/retrieval/bm25_index.json
+  vector_top_k: 8
+  bm25_top_k: 8
+  merged_top_k: 12
+  final_top_k: 5

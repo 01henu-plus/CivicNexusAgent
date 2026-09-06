@@ -1,0 +1,11 @@
+name: drainage
+version: "1.0"
+enabled: true
+priority: 20
+triggers: [污水, 下水道, 排水, 积水, 内涝]
+required_fields: [category, location]
+allowed_tools: [case_search, validate_address, memory_lookup, create_local_case]
+route_defaults:
+  department: 排水部门
+  priority: 普通
+prompt: 重点识别污水、下水道、排水和积水问题。

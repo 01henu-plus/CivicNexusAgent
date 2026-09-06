@@ -1,0 +1,125 @@
+name: civicnexus
+
+services:
+  api:
+    build: .
+    # Docker Desktop shows this as civicnexus-api inside the civicnexus
+    # Compose application. Compose applications are the project-level group;
+    # Docker does not support real parent/child containers.
+    container_name: civicnexus-api
+    ports:
+      - "8000:8000"
+    environment:
+      APP_NAME: ${APP_NAME}
+      APP_ENV: ${APP_ENV}
+      API_PREFIX: ${API_PREFIX}
+      DATABASE_URL: postgresql+psycopg://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}
+      REDIS_URL: redis://${REDIS_HOST}:${REDIS_PORT}/${REDIS_DB}
+      CITY_DATA_PATH: ${CITY_DATA_PATH}
+      CHROMA_HOST: ${CHROMA_HOST:-chroma}
+      CHROMA_PORT: ${CHROMA_PORT:-8000}
+      CHROMA_PERSIST_DIRECTORY: ${CHROMA_PERSIST_DIRECTORY}
+      RETRIEVAL_COLLECTION_NAME: ${RETRIEVAL_COLLECTION_NAME}
+      BM25_INDEX_PATH: ${BM25_INDEX_PATH}
+      EMBEDDING_BASE_URL: ${EMBEDDING_BASE_URL}
+      EMBEDDING_API_KEY: ${EMBEDDING_API_KEY}
+      EMBEDDING_MODEL: ${EMBEDDING_MODEL}
+      EMBEDDING_BATCH_SIZE: ${EMBEDDING_BATCH_SIZE}
+      EMBEDDING_TIMEOUT_SECONDS: ${EMBEDDING_TIMEOUT_SECONDS}
+      EMBEDDING_MAX_RETRIES: ${EMBEDDING_MAX_RETRIES}
+      LLM_BASE_URL: ${LLM_BASE_URL}
+      LLM_API_KEY: ${LLM_API_KEY}
+      LLM_MODEL: ${LLM_MODEL}
+      LLM_TIMEOUT_SECONDS: ${LLM_TIMEOUT_SECONDS:-60}
+      LLM_MAX_TOKENS: ${LLM_MAX_TOKENS:-256}
+      MAX_REVIEW_ROUNDS: ${MAX_REVIEW_ROUNDS}
+      USE_LOCAL_STORAGE: "false"
+      ADMIN_USERNAME: ${ADMIN_USERNAME:-admin}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-change-me}
+      USER_USERNAME: ${USER_USERNAME:-demo}
+      USER_PASSWORD: ${USER_PASSWORD:-demo-me}
+      USER_ID: ${USER_ID:-demo-user}
+      USER_DISPLAY_NAME: ${USER_DISPLAY_NAME:-演示用户}
+      SKILL_DIRECTORY: /app/configs/skills
+    volumes:
+      - ./city_data:/app/city_data:ro
+      - retrieval_data:/app/storage/retrieval
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      chroma:
+        condition: service_started
+    labels:
+      com.civicnexus.project: civicnexus
+      com.civicnexus.component: api
+
+  chroma:
+    image: chromadb/chroma:0.6.3
+    container_name: civicnexus-chroma
+    ports:
+      - "${CHROMA_HOST_PORT:-8001}:8000"
+    environment:
+      IS_PERSISTENT: "TRUE"
+      PERSIST_DIRECTORY: /chroma/chroma
+      ANONYMIZED_TELEMETRY: "FALSE"
+    volumes:
+      - chroma_data:/chroma/chroma
+    labels:
+      com.civicnexus.project: civicnexus
+      com.civicnexus.component: chroma
+
+  frontend:
+    build: ./frontend
+    container_name: civicnexus-frontend
+    ports:
+      - "5173:80"
+    depends_on:
+      api:
+        condition: service_started
+    labels:
+      com.civicnexus.project: civicnexus
+      com.civicnexus.component: frontend
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: civicnexus-postgres
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "${POSTGRES_HOST_PORT}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    labels:
+      com.civicnexus.project: civicnexus
+      com.civicnexus.component: postgres
+
+  redis:
+    image: redis:7-alpine
+    container_name: civicnexus-redis
+    ports:
+      - "${REDIS_HOST_PORT}:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    labels:
+      com.civicnexus.project: civicnexus
+      com.civicnexus.component: redis
+
+volumes:
+  postgres_data:
+  redis_data:
+  chroma_data:
+  retrieval_data:

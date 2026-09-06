@@ -1,0 +1,11 @@
+name: garbage
+version: "1.0"
+enabled: true
+priority: 15
+triggers: [垃圾, 清运, 回收]
+required_fields: [category, location]
+allowed_tools: [case_search, validate_address, memory_lookup, create_local_case]
+route_defaults:
+  department: 环卫部门
+  priority: 普通
+prompt: 重点识别垃圾收集和资源回收问题。

@@ -1,0 +1,22 @@
+{
+  "files.exclude": {
+    "migrations": true,
+    "scripts": true,
+    "storage": true,
+    "**/__pycache__": true,
+    "**/*.pyc": true,
+    "**/*.pyo": true,
+    "**/.pytest_cache": true,
+    "**/.ruff_cache": true
+  },
+  "search.exclude": {
+    "migrations": true,
+    "scripts": true,
+    "storage": true,
+    "**/__pycache__": true,
+    "**/*.pyc": true,
+    "**/*.pyo": true,
+    "**/.pytest_cache": true,
+    "**/.ruff_cache": true
+  }
+}
