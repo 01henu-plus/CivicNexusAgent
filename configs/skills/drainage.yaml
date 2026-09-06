@@ -2,7 +2,7 @@ name: drainage
 version: "1.0"
 enabled: true
 priority: 20
-triggers: [污水, 下水道, 排水, 积水, 内涝]
+triggers: [污水, 下水道, 排水, 积水, 内涝, 漏水, 冒水, 水管, 管道破裂]
 required_fields: [category, location]
 allowed_tools: [case_search, validate_address, memory_lookup, create_local_case]
 route_defaults:
