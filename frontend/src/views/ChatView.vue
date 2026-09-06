@@ -14,9 +14,7 @@ const pending = ref(false);
 const processingLabel = ref("正在思考并处理事项…");
 const error = ref("");
 const messageList = ref<HTMLElement>();
-const messages = ref<ChatMessage[]>([
-  { role: "assistant", content: "您好，我是 CivicNexus。请描述您遇到的城市公共服务问题。" },
-]);
+const messages = ref<ChatMessage[]>([]);
 
 const guestUserId = persistentId(localStorage, USER_KEY, "user");
 const sessionId = persistentId(sessionStorage, SESSION_KEY, "session");
@@ -116,9 +114,7 @@ function resetChat(): void {
   processingLabel.value = "正在思考并处理事项…";
   error.value = "";
   sessionStorage.removeItem(TASK_KEY);
-  messages.value = [
-    { role: "assistant", content: "已开始新对话。请描述您需要处理的问题。" },
-  ];
+  messages.value = [];
 }
 
 onMounted(async () => {
@@ -191,7 +187,6 @@ onMounted(async () => {
           v-model="input"
           rows="2"
           maxlength="500"
-          placeholder="例如：小区门口下水道堵塞，已经开始积水……"
           aria-label="输入问题"
           @keydown.enter.exact.prevent="send"
         ></textarea>
